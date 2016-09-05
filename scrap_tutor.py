@@ -137,7 +137,19 @@ with open('private_scrap_data.csv','w') as mycsv:
 		z+=1
 
 		print('\n--------------------------------------------\n')
+#Shubhankar's code to change csv to xls format
+mycsv.close()
+file=['private_scrap_data.csv']
+for i in file:
+	f=open(i,'rb')
+	read=csv.reader((f),delimiter=",")
+	wbk=xlwt.Workbook()
+	sheet=wbk.add_sheet("Sheet 1")
 
+	for ro, row in enumerate(read):
+		for co, value in enumerate(row):
+			sheet.write(ro,co,value)
+	wbk.save(i+'.xls')
 
 
 
