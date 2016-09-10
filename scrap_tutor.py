@@ -25,9 +25,9 @@ with open('private_scrap_data.csv','w') as mycsv:
 	webpage = requests.get( url, headers=headers )
 	#soup = BeautifulSoup(webpage.content, "html.parser")
 
-	soup = BeautifulSoup(open("/home/Desktop/Delhi - MyPrivateTutor.htm"))####CHANGE
+	soup = BeautifulSoup(webpage.content, "html.parser")####CHANGE
 	stores_url=[]
-	li = soup.find_all('div',class_='memtitle_holder')
+	li = soup.find_all('div',class_='listing_block_holder')
 
 	li2=[]
 	for x in li:
@@ -38,8 +38,8 @@ with open('private_scrap_data.csv','w') as mycsv:
 				#print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
 				li2.append(y.get_text().replace('<span>Pincode:</span>',''))
 	#print(li2)
-	
-	z=0 
+
+	z=0
 
 	for x in li :
 		stores_url.append(x.find('a')['href'])
@@ -52,7 +52,7 @@ with open('private_scrap_data.csv','w') as mycsv:
 		headers = {'User-agent': 'Mozilla/5.0'}
 		webpage = requests.get( url, headers=headers )
 		soup = BeautifulSoup(webpage.content, "html.parser")
-		
+
 		store_det = {}
 
 		store_det['name']='N/A'
@@ -75,14 +75,14 @@ with open('private_scrap_data.csv','w') as mycsv:
 
 		store_det['name'] = soup.find('div', class_='memtitle_holder').find('h2').get_text()
 		print(store_det['name'])
-		
+
 		temp = soup.find('div', class_="instute-contact-details")
 		#print(temp)
 		#print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 		temp2 = []
 		if temp is not None:
 			temp2 = temp.find_all('a', class_='view_contact')
-		
+
 		if len(temp2) >= 1:
 			store_det['phone'] = temp2[0]['href'].replace('tel:','')
 		if len(temp2) >= 2:
@@ -93,13 +93,13 @@ with open('private_scrap_data.csv','w') as mycsv:
 		print(store_det['website'])
 
 		temp = soup.find_all('div', class_="member_basic_info_holder")
-		
+
 		#print(soup.find('div', class_="centerimg_holder"))
-		if soup.find('div', class_="centerimg_holder") is not None and soup.find('div', class_="centerimg_holder").find('img') is not None:
-			store_det['images'] = 'https://www.myprivatetutor.com'+soup.find('div', class_="centerimg_holder").find('img')['src']
+		if soup.find('div', class_="img_holder") is not None and soup.find('div', class_="img_holder").find('img') is not None:
+			store_det['images'] = 'https://www.myprivatetutor.com'+soup.find('div', class_="img_holder").find('img')['src']
 			print('^^^^^^^^^^^^^^^^^^')
 		print(store_det['images'])
-		
+
 
 		for x in temp:
 			temp3 = x.find_all('li')
@@ -117,8 +117,8 @@ with open('private_scrap_data.csv','w') as mycsv:
 		temp = soup.find('div', class_='prof_cont_block')
 		if temp is not None and len(temp.find_all('p')) >= 2:
 			store_det['about'] = temp.find_all('p')[1].get_text()
-		print(store_det['about'])
-		
+		print(store_det['about'].encode('utf-8'))
+
 
 		c.writerow([
 					store_det['name'].encode('utf8'),
@@ -132,51 +132,8 @@ with open('private_scrap_data.csv','w') as mycsv:
 					store_det['images'].encode('utf8'),
 					store_det['category'].encode('utf8'),
 					store_det['about'].encode('utf8')
-					
+
 					])
 		z+=1
 
 		print('\n--------------------------------------------\n')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
