@@ -31,12 +31,15 @@ with open('private_scrap_data.csv','w') as mycsv:
 
 	li2=[]
 	for x in li:
-		for y in x.find_all('li'):
-			#print(y)
-			#print('########################')
-			if 'Pincode' in y.get_text():
-				#print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-				li2.append(y.get_text().replace('<span>Pincode:</span>',''))
+		if 'Pincode' in x.get_text():
+			for y in x.find_all('li'):
+				#print(y)
+				#print('########################')
+				if 'Pincode' in y.get_text():
+					#print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+					li2.append(y.get_text().replace('<span>Pincode:</span>',''))
+		else:
+			li2.append('')
 	#print(li2)
 
 	z=0
