@@ -12,6 +12,21 @@ csv.register_dialect(
     lineterminator = '\r\n',
     quoting = csv.QUOTE_MINIMAL)
 
+##############################
+#0 Ahmedabad
+#1 Allahabad
+#2 Bangalore
+#3 Bhopal
+#4 Bhubaneswar
+#5 Chandigarh
+#6 Chennai
+#7 Coimbatore
+#8 Delhi
+#....
+#.....
+CITY_INDEX = 0 		# DEF : 0
+#############################
+
 base_url = 'https://www.myprivatetutor.com/institutes'
 headers = {'User-agent': 'Mozilla/5.0'}
 webpage = requests.get(base_url, headers=headers )
@@ -20,11 +35,11 @@ soup = BeautifulSoup(webpage.content, "html.parser")
 locations_url = []
 links_mess = soup.find('div',class_='sub_location')
 
-for location in links_mess.find_all('li'):
-	print location.find('a').string
+for idx, location in enumerate(links_mess.find_all('li')):
+	print idx,'\t',location.find('a').string
 	locations_url.append(location.find('a').string)
 
-for location in locations_url:
+for location in locations_url[CITY_INDEX:]:
 	with open(location+'.csv','wb') as mycsv:
 		c = csv.writer(mycsv, dialect='mydialect')
 		c.writerow(['Name','Phone','Website','Area','Address','City','Pincode','India','Image','Category','About'])
